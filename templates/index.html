@@ -1,44 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo de Regresión</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Clasificador de Estrellas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script>
+        function clasificarEstrella(event) {
+            event.preventDefault();
+            const alpha = document.getElementById('alpha').value;
+            const delta = document.getElementById('delta').value;
+            const u = document.getElementById('u').value;
+            const g = document.getElementById('g').value;
+            const r = document.getElementById('r').value;
+            const i = document.getElementById('i').value;
+
+            if (isNaN(alpha) || isNaN(delta) || isNaN(u) || isNaN(g) || isNaN(r) || isNaN(i)) {
+                document.getElementById('resultado').innerText = 'Por favor, ingresa valores numéricos válidos en todos los campos.';
+                return;
+            }
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `alpha=${alpha}&delta=${delta}&u=${u}&g=${g}&r=${r}&i=${i}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('resultado').innerText = 'Error: ' + data.error;
+                } else {
+                    document.getElementById('resultado').innerText = 'La clase del objeto es: ' + data.categoria + ' (' + data.label + ')';
+                }
+            })
+            .catch(error => {
+                document.getElementById('resultado').innerText = 'Error en la solicitud.';
+                console.error('Error:', error);
+            });
+        }
+    </script>
 </head>
-<body>
-    <div class="container">
-        <h2 class="mt-5">Modelo de Regresión</h2>
-        <form action="/predict" method="post">
+<body class="">
+    <div class="container col-md-5">
+        <div class="">
+        <h1 class="">Clasificador de Estrellas</h1>
+        <form id="formulario" onsubmit="clasificarEstrella(event)" class="needs-validation" novalidate>
             <div class="form-group">
-                <label for="alpha">Alpha</label>
+                <label for="alpha">Ángulo de ascensión recta (alpha):</label>
                 <input type="text" class="form-control" id="alpha" name="alpha" required>
+                <div class="invalid-feedback">Por favor, ingresa un valor numérico válido.</div>
             </div>
             <div class="form-group">
-                <label for="delta">Delta</label>
+                <label for="delta">Ángulo de declinación (delta):</label>
                 <input type="text" class="form-control" id="delta" name="delta" required>
+                <div class="invalid-feedback">Por favor, ingresa un valor numérico válido.</div>
             </div>
             <div class="form-group">
-                <label for="u">U</label>
+                <label for="u">Filtro ultravioleta (u):</label>
                 <input type="text" class="form-control" id="u" name="u" required>
+                <div class="invalid-feedback">Por favor, ingresa un valor numérico válido.</div>
             </div>
             <div class="form-group">
-                <label for="g">G</label>
+                <label for="g">Filtro verde (g):</label>
                 <input type="text" class="form-control" id="g" name="g" required>
+                <div class="invalid-feedback">Por favor, ingresa un valor numérico válido.</div>
             </div>
             <div class="form-group">
-                <label for="r">R</label>
+                <label for="r">Filtro rojo (r):</label>
                 <input type="text" class="form-control" id="r" name="r" required>
+                <div class="invalid-feedback">Por favor, ingresa un valor numérico válido.</div>
             </div>
             <div class="form-group">
-                <label for="i">I</label>
+                <label for="i">Filtro infrarrojo cercano (i):</label>
                 <input type="text" class="form-control" id="i" name="i" required>
+                <div class="invalid-feedback">Por favor, ingresa un valor numérico válido.</div>
             </div>
-            <button type="submit" class="btn btn-primary">Predecir</button>
+            <div>
+                <div class="">
+                    <button type="submit" class="btn btn-success">Enviar</button>
+                </div>
+            </div>
+            
         </form>
-        {% if prediction_text %}
-        <h3 class="mt-4">{{ prediction_text }}</h3>
-        {% endif %}
+        <p id="resultado" class="mt-3"></p>
     </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 </body>
 </html>
