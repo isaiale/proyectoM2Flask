@@ -9,7 +9,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 # Cargar el modelo entrenado
-model = load_model('modeloStartClass.h5')
+model = joblib.load('modeloStartClass.pkl')
 app.logger.debug('Modelo cargado correctamente.')
 
 # Diccionario para mapear las clases numéricas a etiquetas de texto
