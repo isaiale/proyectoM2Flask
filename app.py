@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, jsonify
 import pandas as pd
 from tensorflow.keras.models import load_model
+import joblib
 import logging
 
 app = Flask(__name__)
