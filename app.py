@@ -5,7 +5,7 @@ import numpy as np
 app = Flask(__name__)
 
 # Cargar el modelo
-model = joblib.load('modeloConcreto.pkl')
+model = joblib.load('modelorandom.pkl')
 
 @app.route('/')
 def home():
