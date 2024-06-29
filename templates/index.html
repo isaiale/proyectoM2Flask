@@ -1,20 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Concrete Strength Prediction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción de la Resistencia del Concreto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Predict Concrete Strength</h1>
-    <form id="predictionForm">
-        Cement: <input type="text" id="cement"><br>
-        Slag: <input type="text" id="slag"><br>
-        Flyash: <input type="text" id="flyash"><br>
-        Water: <input type="text" id="water"><br>
-        Superplasticizer: <input type="text" id="superplasticizer"><br>
-        Age: <input type="text" id="age"><br>
-        <input type="submit" value="Predict">
-    </form>
-    <h2 id="result"></h2>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <h4 class="text-center mt-4">Predicción de la Resistencia a la Compresión del Concreto</h4>
+                <form id="predictionForm" class="mt-2">
+                    <div class="form-group mb-1">
+                        <label for="cement">Cemento:</label>
+                        <input type="text" class="form-control" id="cement">
+                    </div>
+                    <div class="form-group mb-1">
+                        <label for="slag">Escoria:</label>
+                        <input type="text" class="form-control" id="slag">
+                    </div>
+                    <div class="form-group mb-1">
+                        <label for="flyash">Ceniza Volante:</label>
+                        <input type="text" class="form-control" id="flyash">
+                    </div>
+                    <div class="form-group mb-1">
+                        <label for="water">Agua:</label>
+                        <input type="text" class="form-control" id="water">
+                    </div>
+                    <div class="form-group mb-1">
+                        <label for="superplasticizer">Superplastificante:</label>
+                        <input type="text" class="form-control" id="superplasticizer">
+                    </div>
+                    <div class="form-group mb-1">
+                        <label for="age">Edad:</label>
+                        <input type="text" class="form-control" id="age">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Predecir</button>
+                </form>
+                <h3 id="result" class="text-center mt-4"></h3>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.getElementById('predictionForm').onsubmit = async (e) => {
@@ -38,7 +65,7 @@
             });
 
             const result = await response.json();
-            document.getElementById('result').innerText = `Predicted Strength: ${result.prediction}`;
+            document.getElementById('result').innerText = `Resistencia Predicha: ${result.prediction}`;
         };
     </script>
 </body>
